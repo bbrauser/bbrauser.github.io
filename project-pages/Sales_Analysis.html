@@ -69,8 +69,8 @@
             - Change "desktop.jpeg" to the image filename you uploaded in the assets/images folder.
           -->
         <div class="main-title">Acme Corporation Sales Analysis</div>
-        <div class="body-text">This comprehensive study dives deep into Amazon's sales data to unearth patterns, predict future trends, and offer prescriptive strategies for sustainable growth. If you're looking to see raw data transformed into a strategic asset, you've come to the right place. Explore further to discover the power of data-driven decision-making.</div>
-        <image class="project-header-image" src="../assets/images/desktop.jpeg">
+        <div class="body-text">This comprehensive study dives deep into Amazon's sales data to unearth patterns, predict future trends, and offer prescriptive strategies for sustainable growth.</div>
+        <image class="project-header-image" src="../assets/images/acme.jpeg">
       </div>
 
       <!-- PROJECT DETAILS -->
@@ -83,7 +83,7 @@
       <div id="project-details">
         <div class="subheader-text">Introduction</div>
         <div class="project-details-content">
-          <div class="body-text">In an age of data-driven decisions, sales analysis isn't just a perk—it’s a necessity. Effective sales analysis can provide critical insights into consumer behavior, sales trends, and market dynamics. It helps businesses to optimize their strategies and ultimately increase revenue.</div>
+          <div class="body-text">In an age of data-driven decisions, sales analysis isn't just a perk — it’s a necessity. Effective sales analysis can provide critical insights into consumer behavior, sales trends, and market dynamics. It helps businesses to optimize their strategies and ultimately increase revenue.</div>
       <div id="project-details">
         <div class="subheader-text">Data Source</div>
         <div class="project-details-content">
@@ -94,6 +94,37 @@
           <div class="body-text">• Price Each (float) - The unit price of the product<br>
           <div class="body-text">• Order Date (datetime) - The date and time the order was placed<br>
           <div class="body-text">• Purchase Address (str) - The address from which the order was placed</div>
+          <div class="body-text">This dataset contains 433,316 rows, so it makes it ideal for sales</div>
+      <div id="project-details">
+        <div class="subheader-text">Importing and Cleaning the Data</div>
+        <div class="project-details-content">
+          <div class="body-text">In order to perform analysis on this dataset, I first had to import some necessary libraries.</div>
+          <div> class="box">
+            <pre class="line-numbers">
+              <code class="language-css">
+                # Standard libraries
+                import calendar
+                import warnings
+                from collections import Counter
+                from itertools import combinations
+                
+                # Data manipulation and analysis
+                import pandas as pd
+                import numpy as np
+                
+                # Visualization
+                import matplotlib.pyplot as plt
+                import matplotlib.ticker as ticker
+                from matplotlib.ticker import FuncFormatter, MultipleLocator
+                import seaborn as sns
+                
+                # Configuration & settings
+                pd.options.display.float_format = '{:,.0f}'.format
+                warnings.filterwarnings('ignore', category=DeprecationWarning)
+              </code>
+           </pre>
+           <span class="image-caption">Note: All of the libraries used in this analysis are imported here for ease of reading.</span>
+          <div class="body-text">In order to perform analysis on this dataset, I first had to import some necessary libraries.</div>
         </div>
       </div>
 
