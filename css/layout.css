@@ -17,24 +17,25 @@ body {
 
 /* Navbar styles */
 .navbar {
-  background-color: rgba(0, 0, 0, 0.8); /* Opaque black background */
-  color: white; /* Text color */
-  padding: 10px; /* Padding */
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
 }
 
 .nav-title {
-  font-size: 18px; /* Font size for the title */
+  font-size: 18px;
+  color: white;
 }
 
 .button {
-  background-color: white; /* Button background */
-  color: black; /* Button text color */
-  padding: 10px; /* Button padding */
-  margin-left: 20px; /* Margin */
+  background-color: white;
+  color: black;
+  padding: 10px;
+  margin-left: 20px;
 }
 
 .button-text {
-  font-size: 14px; /* Font size for the button text */
+  font-size: 14px;
 }
 
 
