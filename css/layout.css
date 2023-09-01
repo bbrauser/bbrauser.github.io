@@ -15,6 +15,28 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Navbar styles */
+.navbar {
+  background-color: rgba(0, 0, 0, 0.8); /* Opaque black background */
+  color: white; /* Text color */
+  padding: 10px; /* Padding */
+}
+
+.nav-title {
+  font-size: 18px; /* Font size for the title */
+}
+
+.button {
+  background-color: white; /* Button background */
+  color: black; /* Button text color */
+  padding: 10px; /* Button padding */
+  margin-left: 20px; /* Margin */
+}
+
+.button-text {
+  font-size: 14px; /* Font size for the button text */
+}
+
 
 
 
