@@ -1,185 +1,107 @@
-
-
-<!-- 
-  IMPORTANT! 
-  
-  Keep this file unchanged to use as a template for all future project pages. 
-
-  For every new project you add to your portfolio, make a copy of this file in the
-  'project-pages' folder with a name related to the project.
--->
-
-
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-    <!-- 
-      TODO
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecommerce Data Analysis Project</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
-      Upload your Unemployable (or whatever photo you like) to the assets/images folder
-      and change the name of the image below to match the uploaded one
+    <header>
+        <h1>Ecommerce Analysis - Data Cleaning</h1>
+    </header>
 
-      Change the title in the <title> tag to whatever you would like the title of your portfolio to be
-
-      This should be the same across all pages.
-     -->
-     <link rel="icon" href="../assets/images/1311.png" />
-     <title>Brad Brauser - Board Game Analysis</title>
-    <meta name="description" content="Data analysis for board games gathered from BoardGameGeek.com">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-		<link rel="stylesheet" href="../css/layout.css">
-    <link rel="stylesheet" href="../css/typography.css">
-    <link rel="stylesheet" href="../css/utilities.css">
-
-		<script defer src="../js/script.js"></script>
-	</head>
-	<body>
-    <!-- NAVBAR -->
-    <div class="navbar">
-      <a class="nav-title-link" href="../index.html">
-        <!-- 
-          TODO - Change the "Portfolio Title" to whatever you want displayed in the top left
-
-          (this should be the same across all pages)
-         -->
-        <span class="nav-title">Brad Brauser</span>
-        <!-- 
-          TODO - Change the email after 'mailto:' to your email address for contact 
+    <section>
+        <h2>Introduction</h2>
+        <p>
+            E-commerce has fundamentally transformed the way business is conducted around the world, offering unparalleled convenience and accessibility for both consumers and merchants. The rise of online shopping platforms, from mammoth giants like Amazon to specialized niche storefronts, has provided consumers with an endless variety of products right at their fingertips, without the constraints of geographical boundaries or traditional store hours. According to a report by Statista, global e-commerce sales are projected to grow from roughly 875 billion U.S. dollars in 2022 to over 1.3 trillion U.S. dollars in 2025. Furthermore, as per Oberlo, it's estimated that by 2025, over 2.77 billion people worldwide would have bought goods or services online. The meteoric growth and importance of e-commerce cannot be overstated; it has revolutionized retail, logistics, and even the global supply chain, driving innovation and forging new pathways for international trade and commerce. (Sources: Statista, Oberlo, 2023).
+        </p>
+        <p>
+            To begin this analysis, we must first send it to the cleaners! Using a Jupyter notebook, we will read in the data, gather some basic info on both the numerical and categorical columns, deal with missing values, and save that data to a cleaned CSV. The Python library ‘pandas’ can import the csv into the notebook:
+        </p>
+        <img src="../assets/images/ECommerce/data_prep1.png" alt="Data Preparation Step 1" width="100%">
         
-          (this should be the same across all pages)
-        -->
-        <a class="button" href="mailto:bbrauser@gmail.com">
-          <span class="button-text">Contact Me</span>
-        </a>
-      </a>
-    </div>
+        <p>
+            Now that we have the data loaded into the dataframe, let’s take a look at some basic information using the info() method:
+        </p>
+        <img src="../assets/images/ECommerce/data_prep2.png" alt="Dataframe Information" width="100%">
+    </section>
 
-    <!-- MAIN PAGE CONTENT -->
-    <div id="main-content">
+    <section>
+        <h2>Numerical Variables</h2>
+        <p>
+            The describe() method gives us some descriptive statistics on the numerical variables of our dataset, such as the count, mean, and standard deviation. The only numerical variables in the dataset are Quantity, UnitPrice, CustomerID.
+        </p>
+        <img src="../assets/images/ECommerce/data_prep3.png" alt="Numerical Variables" width="100%">
+        
+        <p>
+            CustomerID should really be a string, as it is the unique identifier and not subject to analysis (we will fix this later on), but there are some interesting things to note in Quantity and UnitPrice. If we look at the minimum for each column, we can see that there are negative numbers. In Quantity, a negative value represents a "return transaction" instead of a "purchase transaction". Businesses use quantity sold * unit price to determine sales revenue. A return transaction results in a decrease in revenue. In UnitPrice, there are only two negative values, as you can see below:
+        </p>
+        <img src="../assets/images/ECommerce/data_prep4.png" alt="Negative Values in Numerical Variables" width="100%">
+    </section>
 
-      <!-- PROJECT HEADER -->
-      <div id="project-header">
-          <!-- 
-            TODO
+    <section>
+        <h2>Categorical Variables</h2>
+        <p>
+            Now that we’ve seen descriptive statistics of the numerical variables, it’s now time to take a look at the categorical variables.
+        </p>
+        <img src="../assets/images/ECommerce/data_prep5.png" alt="Categorical Variables" width="100%">
+        
+        <p>
+            Here we can see there are 6 categorical variables (InvoiceNo, StockCode, Description, InvoiceDate, CustomerID, and Country). For each of the variables, we can see the number of rows, the number of unique values, the most frequent value found, and how many times that value occurred in the column. As seen before, CustomerID is missing values. For a further look into the descriptive statistics, let’s find the percentage of each unique value in the columns:
+        </p>
+        <img src="../assets/images/ECommerce/data_prep6.png" alt="Unique Values in Categorical Variables" width="100%">
+    </section>
 
-            - Change the 'main-title' text to the name of your project
-            - Change the 'body-text' text to a short and sweet description of your project (maybe the same as the one on the project card)
-            - Change "desktop.jpeg" to the image filename you uploaded in the assets/images folder.
-          -->
-        <div class="main-title">Board Game Analysis</div>
-        <div class="body-text">With data for over 10,000 games gathered from BoardGameGeek.com, we take a look at breakdown of various aspects of the games. </div>
-        <image class="project-header-image" src="../assets/images/desktop.jpeg">
-      </div>
+    <section>
+        <h2>Missing Values</h2>
+        <p>
+            Now is the time we have to make some decisions about what to do about missing values. Let’s visualize the missing data in a heatmap:
+        </p>
+        <img src="../assets/images/ECommerce/data_prep7.png" alt="Missing Data Heatmap" width="100%">
+        
+        <p>
+            Each line above the column names in the heatmap represent a single row of data. Purple indicates that there is a value present, and yellow represents a missing value. As discussed before, CustomerID has about 25% of its data missing. But we can also see that ‘Description’ is missing some values as well. If we use a combination of the isnull() and sum() methods, we can see just how many rows in each column are missing data.
+        </p>
+        <img src="../assets/images/ECommerce/data_prep8.png" alt="Missing Data Summary" width="100%">
+        
+        <p>
+            Now that we know what columns are missing data, we have to make a decision on what to do with those missing rows. For Description, we will simply fill in the missing values with “NO DESCRIPTION AVAILABLE” as less than 1% of the values are missing. Similarly, we are going to use “NO CUSTOMER ID” in CustomerID so we can still make use of the column even though a substantial proportion is missing.
+        </p>
+        <img src="../assets/images/ECommerce/data_prep9.png" alt="Handling Missing Data" width="100%">
+    </section>
 
-      <!-- PROJECT DETAILS -->
-      <!-- 
-        TODO
+    <section>
+        <h2>Date-Time Conversion and Extraction</h2>
+        <p>
+            The last thing we want to do to clean this data concerns the InvoiceDate column. As of right now, InvoiceDate is a string object. We want to make it a datetime object so we can perform some time series analysis. To do this, we will make use of panda’s to_datetime() method.
+        </p>
+        <img src="../assets/images/ECommerce/data_prep10.png" alt="Date-Time Conversion" width="100%">
+        
+        <p>
+            From this datetime object, we will extract the year, month, day, weekday, and hour and make them new variables. As a note, dt.weekday returns the day of the week with Monday=0 and Sunday=6.
+        </p>
+        <img src="../assets/images/ECommerce/data_prep11.png" alt="Date-Time Extraction" width="100%">
+    </section>
 
-        - Change the 'subheader-text' to whatever header you want for project details
-        - Add paragraphs using the <div class="body-text"></div> elements in the "project-details-content"
-      -->
-      <div id="project-details">
-        <div class="subheader-text">Project Details / Background</div>
-        <div class="project-details-content">
-          <div class="body-text">Board games are a popular past time, not only in the United States but also in other parts of the world as well. They allow us to meet new people or strengthen old relationships, increase our brain function, teach us how to set goals and be patient, reduce stress, and enhance creativity and self-confidence. Games can range from simple to complex, and can include as few as two people and as many as you can fit at your table. There are an abundance of themes that allow you to command an army trying to take over the world to being a cowboy in the wild west. Chances are very good that there is a board game for almost every interest out there, and if there’s not, the innovation of larger, more established companies like Parker Brothers or Milton-Bradley, as well as smaller, independent companies will almost certainly produce them.</div>
-          <div class="body-text">For this study, I utilized a dataset comprised of more than 10,000 board game titles listed on the website BoardGameGeek.com. The following are the variables I used for analysis that are native to the dataset, along with a brief description of them:
-    		<ul style="margin-left: 20px;">
-        		<li>YearPublished: the year in which a board game was published</li>
-        		<li>MinPlayers: the minimum number of players required</li>
-        		<li>MaxPlayers: the maximum number of players allowed</li>
-        		<li>PlayTime: the estimated amount of time needed to play in minutes</li>
-        		<li>MinAge: the minimum age requirement in years</li>
-        		<li>RatingAverage: the average rating users of BoardGameGeek.com (BGG) gave the title on a scale of 0-10</li>
-        		<li>ComplexityAverage: the average complexity rating BGG gave a title on a scaled of 1-10</li>
-        		<li>Domain: the genre of a game</li>
-    		</ul>
-      </div>
-          <div class="body-text">In addition to variables mentioned above, I also created two variables to allow for further analysis of the dataset:
-		<ul style="margin-left: 20px;">
-        		<li>Period: the time period in which a game was published (1900-1919, 1920-1939, etc.)</li>
-		        <li>Popular: if a board game had an average rating of 7.5 or over, it is considered popular</li>
-    		</ul>
-	  <div class="body-text">I used frequency analysis to see the breakdown of the three categorical variables Domain, Period, and Popular, and generated the descriptives of the numerical variables MinPlayers, MaxPlayers, PlayTime, MinAge, RatingAverage, and ComplexityAverage. The linear relationship between Complexity, RatingAverage, and MinAge was investigated, as well as a cross table showing the dependence/independence of the variables Period and Domain. Further, I developed a multiple regression model to see if RatingAverage was affected by PlayTime, MinAge, and ComplexityRating, and I also developed a logistic regression model to see the impact of Year, MinPlayers, PlayTime, MinAge, and ComplexityAverage had on the binary variable Popular.
-</div>
-	</div>
+    <section>
+        <h2>Save Cleaned Data</h2>
+        <p>
+            Now that we have cleaned and preprocessed the dataset, we want to save this so we don’t have to do all of these steps again. We can use the to_csv() method to save it to a csv file:
+        </p>
+        <img src="../assets/images/ECommerce/data_prep12.png" alt="Save Cleaned Data" width="100%">
+        
+        <p>
+            We are now ready to perform some exploratory data analysis, which will be the subject of our next post.
+        </p>
+    </section>
 
-      <!-- IMAGE GALLERY -->
-      <div id="project-gallery">
-        <!-- TODO - Change the 'subheader-text' to whatever you want the Gallery section header to say -->
-        <!--
-	<div class="subheader-text">Image Gallery</div>
-        <div class="project-gallery-content">
-	-->
-            <!-- 
-              TODO
+    <footer>
+        <p>Project by: [Your Name]</p>
+        <p>Contact information: <a href="mailto:youremail@example.com">youremail@example.com</a></p>
+    </footer>
 
-              This is where the images in the gallery live. Here's a simple gallery image for you to copy:
-
-              Full Width Image:
-
-                <div class="gallery-image-container">
-                  <img src="../assets/images/IMAGE_NAME" class="gallery-image">
-                  <span class="image-caption">IMAGE_CAPTION</span>
-                </div>
-
-              Half Width Image: 
-
-                <div class="gallery-image-container half-width">
-                  <img src="../assets/images/IMAGE_NAME" class="gallery-image">
-                  <span class="image-caption">IMAGE_CAPTION</span>
-                </div>
-
-              - To add an image to the this area, copy one of the above, paste it below this comment, and change the following:
-                  - IMAGE_NAME: the name of the image file in assets/images
-                  - IMAGE_CAPTION: to the caption of the image
-            -->
-            <!--
-	    <div class="gallery-image-container half-width">
-              <img src="../assets/images/code.jpeg" class="gallery-image">
-              <span class="image-caption">Give your image a caption. People love context.</span>
-            </div>
-            <div class="gallery-image-container half-width">
-              <img src="../assets/images/sketchbook.jpeg" class="gallery-image">
-              <span class="image-caption">Give your image a caption. People love context.</span>
-            </div>
-            <div class="gallery-image-container">
-              <img src="../assets/images/camera.jpeg" class="gallery-image">
-              <span class="image-caption">Give your image a caption. People love context.</span>
-            </div>
-	    -->
-        </div>
-      </div>
-    </div>
-	    
-    <!-- FOOTER -->
-    <div id="footer">
-      <!-- 
-        TODO - Change href to your Instagram account (can also delete entire "a" element if no Instagram) 
-
-        This should be the same across all pages.
-      -->
-      <a class="icon-link" target="_blank" href="https://twitter.com/whitevans_eth">
-        <image src="../assets/icons/instagram.svg" class="footer-icon"/>
-      </a>
-      <!-- 
-        TODO - Change href to your Twitter account (can also delete entire "a" element if no Twitter) 
-      
-        This should be the same across all pages.
-      -->
-      <a class="icon-link" target="_blank" href="https://twitter.com/whitevans_eth">
-        <image src="../assets/icons/twitter.svg" class="footer-icon"/>
-      </a>
-      <!-- 
-        TODO - Change the email after "mailto" to your contact email 
-      
-        This should be the same across all pages.
-      -->
-      <a class="icon-link" href="mailto:whitevans.eth@gmail.com">
-        <image src="../assets/icons/mail.svg" class="footer-icon"/>
-      </a>
-    </div>
-
-	</body>
+</body>
 </html>
