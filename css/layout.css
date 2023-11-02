@@ -181,12 +181,16 @@ body {
     .gallery-image-container {
       width: 100%;
       display: flex;
+      justify-content: center; /* Center horizontally */
+      align-items: center;     /* Center vertically */
       flex-direction: column;
       gap: 10px;
     }
 
     .gallery-image-container.half-width {
       width: calc((100% - 16px) / 2);
+      justify-content: center; /* Center horizontally */
+      align-items: center;     /* Center vertically */
     }
 
     .gallery-image {
