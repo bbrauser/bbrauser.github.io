@@ -25,8 +25,8 @@
       This should be the same across all pages.
      -->
      <link rel="icon" href="../assets/images/1311.png" />
-     <title>Unemployables Portfolio</title>
-    <meta name="description" content="A portfolio template for the Unemployables community.">
+     <title>Brad Brauser - Board Game Analysis</title>
+    <meta name="description" content="Data analysis for board games gathered from BoardGameGeek.com">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 		<link rel="stylesheet" href="../css/layout.css">
@@ -44,13 +44,13 @@
 
           (this should be the same across all pages)
          -->
-        <span class="nav-title">Portfolio Title</span>
+        <span class="nav-title">Brad Brauser</span>
         <!-- 
           TODO - Change the email after 'mailto:' to your email address for contact 
         
           (this should be the same across all pages)
         -->
-        <a class="button" href="mailto:whitevans.eth@gmail.com">
+        <a class="button" href="mailto:bbrauser@gmail.com">
           <span class="button-text">Contact Me</span>
         </a>
       </a>
@@ -68,8 +68,8 @@
             - Change the 'body-text' text to a short and sweet description of your project (maybe the same as the one on the project card)
             - Change "desktop.jpeg" to the image filename you uploaded in the assets/images folder.
           -->
-        <div class="main-title">Project Name</div>
-        <div class="body-text">A small description about the project goes here, get the reader hooked on the project and tell them why they should continue to read this page. Give it a sweet tagline.</div>
+        <div class="main-title">Board Game Analysis</div>
+        <div class="body-text">With data for over 10,000 games gathered from BoardGameGeek.com, we take a look at breakdown of various aspects of the games. </div>
         <image class="project-header-image" src="../assets/images/desktop.jpeg">
       </div>
 
@@ -83,16 +83,35 @@
       <div id="project-details">
         <div class="subheader-text">Project Details / Background</div>
         <div class="project-details-content">
-          <div class="body-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tristique risus nec feugiat in fermentum. Sed id semper risus in hendrerit gravida. Placerat duis ultricies lacus sed. Id neque aliquam vestibulum morbi blandit cursus risus. Elit pellentesque habitant morbi tristique senectus et netus et. Elementum tempus egestas sed sed risus pretium quam. Nibh ipsum consequat nisl vel pretium lectus quam id leo. Vitae congue mauris rhoncus aenean vel elit.</div>
-          <div class="body-text">Vitae justo eget magna fermentum. Imperdiet nulla malesuada pellentesque elit eget gravida. Aliquet nec ullamcorper sit amet. Aliquet sagittis id consectetur purus. Ac tortor dignissim convallis aenean. Enim neque volutpat ac tincidunt vitae. Lobortis feugiat vivamus at augue. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Viverra orci sagittis eu volutpat. Massa tincidunt nunc pulvinar sapien et ligula. Donec enim diam vulputate ut.</div>
-        </div>
+          <div class="body-text">Board games are a popular past time, not only in the United States but also in other parts of the world as well. They allow us to meet new people or strengthen old relationships, increase our brain function, teach us how to set goals and be patient, reduce stress, and enhance creativity and self-confidence. Games can range from simple to complex, and can include as few as two people and as many as you can fit at your table. There are an abundance of themes that allow you to command an army trying to take over the world to being a cowboy in the wild west. Chances are very good that there is a board game for almost every interest out there, and if there’s not, the innovation of larger, more established companies like Parker Brothers or Milton-Bradley, as well as smaller, independent companies will almost certainly produce them.</div>
+          <div class="body-text">For this study, I utilized a dataset comprised of more than 10,000 board game titles listed on the website BoardGameGeek.com. The following are the variables I used for analysis that are native to the dataset, along with a brief description of them:
+    		<ul style="margin-left: 20px;">
+        		<li>YearPublished: the year in which a board game was published</li>
+        		<li>MinPlayers: the minimum number of players required</li>
+        		<li>MaxPlayers: the maximum number of players allowed</li>
+        		<li>PlayTime: the estimated amount of time needed to play in minutes</li>
+        		<li>MinAge: the minimum age requirement in years</li>
+        		<li>RatingAverage: the average rating users of BoardGameGeek.com (BGG) gave the title on a scale of 0-10</li>
+        		<li>ComplexityAverage: the average complexity rating BGG gave a title on a scaled of 1-10</li>
+        		<li>Domain: the genre of a game</li>
+    		</ul>
       </div>
+          <div class="body-text">In addition to variables mentioned above, I also created two variables to allow for further analysis of the dataset:
+		<ul style="margin-left: 20px;">
+        		<li>Period: the time period in which a game was published (1900-1919, 1920-1939, etc.)</li>
+		        <li>Popular: if a board game had an average rating of 7.5 or over, it is considered popular</li>
+    		</ul>
+	  <div class="body-text">I used frequency analysis to see the breakdown of the three categorical variables Domain, Period, and Popular, and generated the descriptives of the numerical variables MinPlayers, MaxPlayers, PlayTime, MinAge, RatingAverage, and ComplexityAverage. The linear relationship between Complexity, RatingAverage, and MinAge was investigated, as well as a cross table showing the dependence/independence of the variables Period and Domain. Further, I developed a multiple regression model to see if RatingAverage was affected by PlayTime, MinAge, and ComplexityRating, and I also developed a logistic regression model to see the impact of Year, MinPlayers, PlayTime, MinAge, and ComplexityAverage had on the binary variable Popular.
+</div>
+	</div>
 
       <!-- IMAGE GALLERY -->
       <div id="project-gallery">
         <!-- TODO - Change the 'subheader-text' to whatever you want the Gallery section header to say -->
-        <div class="subheader-text">Image Gallery</div>
+        <!--
+	<div class="subheader-text">Image Gallery</div>
         <div class="project-gallery-content">
+	-->
             <!-- 
               TODO
 
@@ -116,7 +135,8 @@
                   - IMAGE_NAME: the name of the image file in assets/images
                   - IMAGE_CAPTION: to the caption of the image
             -->
-            <div class="gallery-image-container half-width">
+            <!--
+	    <div class="gallery-image-container half-width">
               <img src="../assets/images/code.jpeg" class="gallery-image">
               <span class="image-caption">Give your image a caption. People love context.</span>
             </div>
@@ -128,10 +148,11 @@
               <img src="../assets/images/camera.jpeg" class="gallery-image">
               <span class="image-caption">Give your image a caption. People love context.</span>
             </div>
+	    -->
         </div>
       </div>
     </div>
-
+	    
     <!-- FOOTER -->
     <div id="footer">
       <!-- 
