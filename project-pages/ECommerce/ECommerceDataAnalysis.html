@@ -1,0 +1,175 @@
+
+
+<!-- 
+  IMPORTANT! 
+  
+  Keep this file unchanged to use as a template for all future project pages. 
+
+  For every new project you add to your portfolio, make a copy of this file in the
+  'project-pages' folder with a name related to the project.
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+    <!-- 
+      TODO
+
+      Upload your Unemployable (or whatever photo you like) to the assets/images folder
+      and change the name of the image below to match the uploaded one
+
+      Change the title in the <title> tag to whatever you would like the title of your portfolio to be
+
+      This should be the same across all pages.
+     -->
+     <link rel="icon" href="../assets/images/Brad_B_Headshot-10.jpg" />
+     <title>My Projects</title>
+    <meta name="description" content="Analysis for an online retailer located in the United Kingdom">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/typography.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+
+		<script defer src="../js/script.js"></script>
+	</head>
+	<body>
+    <!-- NAVBAR -->
+    <div class="navbar">
+      <a class="nav-title-link" href="../index.html">
+        <!-- 
+          TODO - Change the "Portfolio Title" to whatever you want displayed in the top left
+
+          (this should be the same across all pages)
+         -->
+        <span class="nav-title">E-Commerce Data Analysis</span>
+        <!-- 
+          TODO - Change the email after 'mailto:' to your email address for contact 
+        
+          (this should be the same across all pages)
+        -->
+        <a class="button" href="mailto:bbrauser@gmail.com">
+          <span class="button-text">Contact Me</span>
+        </a>
+      </a>
+    </div>
+
+    <!-- MAIN PAGE CONTENT -->
+    <div id="main-content">
+
+      <!-- PROJECT DETAILS -->
+      <!-- 
+        TODO
+
+        - Change the 'subheader-text' to whatever header you want for project details
+        - Add paragraphs using the <div class="body-text"></div> elements in the "project-details-content"
+      -->
+      <div id="project-details">
+        <div class="subheader-text">Introduction</div>
+        <div class="project-details-content">
+          <div class="body-text">E-commerce has fundamentally transformed the way business is conducted around the world, offering unparalleled convenience and accessibility for both consumers and merchants. The rise of online shopping platforms, from mammoth giants like Amazon to specialized niche storefronts, has provided consumers with an endless variety of products right at their fingertips, without the constraints of geographical boundaries or traditional store hours. According to a report by Statista, global e-commerce sales are projected to grow from roughly 875 billion U.S. dollars in 2022 to over 1.3 trillion U.S. dollars in 2025. Furthermore, as per Oberlo, it's estimated that by 2025, over 2.77 billion people worldwide would have bought goods or services online. The meteoric growth and importance of e-commerce cannot be overstated; it has revolutionized retail, logistics, and even the global supply chain, driving innovation and forging new pathways for international trade and commerce. (Sources: Statista, Oberlo, 2023).</div>
+          <div class="body-text">To begin this analysis, we must first send it to the cleaners! Using a <a href="https://drive.google.com/file/d/1ERap8Lz68QZhk5YARDvBHHMF_l7pvS3g/view?usp=sharing" target="_blank">Google Colab notebook</a>, we will read in the data, gather some basic info on both the numerical and categorical columns, deal with missing values, and save that data to a cleaned CSV. The Python library ‘pandas’ can import the CSV into the notebook:</div>
+            <div class="gallery-image-container">
+              <img src="../assets/images/ECommerce/data_prep1.png" class="gallery-image">
+            </div>
+          <div class="body-text">Now that we have the data loaded into the dataframe, let’s take a look at some basic information using the info() method:</div>
+            <div class="gallery-image-container half-width">
+              <img src="../assets/images/ECommerce/data_prep2.png" class="gallery-image">
+            </div>
+          <div class="body-text">As we can see here, we have the column names, the number of rows that are not empty (or non-null), and the data type of the column (object, int, float, or datetime). Looking at the ‘Range Index’ at the top, we can see there are two 541,909 entries. However, if we look at the ‘Non-Null Section’, there are two columns that have less ‘non-null’ entries than the rest, meaning that those two columns have missing values. We’ll deal with those later.</div>
+      
+        <div class="subheader-text">Numerical Variables</div>
+        <div class="project-details-content">
+          <div class="body-text">The describe() method gives us some descriptive statistics on the numerical variables of our dataset, such as the count, mean, and standard deviation. The only numerical variables in the dataset are Quantity, UnitPrice, CustomerID.</div>
+            <div class="gallery-image-container half-width">
+              <img src="../assets/images/ECommerce/data_prep3.png" class="gallery-image">
+            </div>
+          <div class="body-text">CustomerID should really be a string, as it is the unique identifier and not subject to analysis (we will fix this later on), but there are some interesting things to note in Quantity and UnitPrice. If we look at the minimum for each column, we can see that there are negative numbers. In Quantity, a negative value represents a "return transaction" instead of a "purchase transaction". Businesses use quantity sold * unit price to determine sales revenue. A return transaction results in a decrease in revenue. In UnitPrice, there are only two negative values, as you can see below:</div>
+            <div class="gallery-image-container half-width">
+              <img src="../assets/images/ECommerce/data_prep4.png" class="gallery-image">
+            </div>
+          <div class="body-text">We will include these in our final analysis, as it will significantly impact sales revenue.</div>
+
+        <div class="subheader-text">Categorical Variables</div>
+        <div class="project-details-content">
+          <div class="body-text">Now that we’ve seen descriptive statistics of the numerical variables, it’s now time to take a look at the categorical variables.</div>
+            <div class="gallery-image-container">
+              <img src="../assets/images/ECommerce/data_prep5.png" class="gallery-image">
+            </div>
+          <div class="body-text">Here we can see there are 6 categorical variables (InvoiceNo, StockCode, Description, InvoiceDate, CustomerID, and Country). For each of the variables, we can see the number of rows, the number of unique values, the most frequent value found, and how many times that value occurred in the column. As seen before, CustomerID is missing values. For a further look into the descriptive statistics, let’s find the percentage of each unique value in the columns:</div>
+            <div class="gallery-image-container">
+              <img src="../assets/images/ECommerce/data_prep6.png" class="gallery-image">
+            </div>
+
+        <div class="subheader-text">Missing Values</div>
+        <div class="project-details-content">
+          <div class="body-text">Now is the time we have to make some decisions about what to do about missing values. Let’s visualize the missing data in a heatmap:</div>
+            <div class="gallery-image-container">
+              <img src="../assets/images/ECommerce/data_prep7.png" class="gallery-image">
+            </div>
+          <div class="body-text">Each line above the column names in the heatmap represent a single row of data. Purple indicates that there is a value present, and yellow represents a missing value. As discussed before, CustomerID has about 25% of its data missing. But we can also see that ‘Description’ is missing some values as well. If we use a combination of the isnull() and sum() methods, we can see just how many rows in each column are missing data.</div>
+            <div class="gallery-image-container half-width">
+              <img src="../assets/images/ECommerce/data_prep8.png" class="gallery-image">
+            </div>
+          <div class="body-text">As expected, InvoiceNo, StockCode, Quantity, InvoiceDate, UnitPrice, and Country have no missing values. There are 1,454 rows missing from Description, making up 0.27% of the column and CustomerID is missing 135,080 rows, or 24.9%.</div>
+          <div class="body-text">Now that we know what columns are missing data, we have to make a decision on what to do with those missing rows. There are a myriad of ways that missing data can be handled, but we have to choose the best one for our analysis. One thing to take into consideration is that both of these variables are categorical, so methods like mean/median/mode imputation (filling missing values with the mean, median, or mode of the observed values) or regression imputation (using a regression model to predict and replace missing values based on other variables) would not be appropriate as these are not numerical variables. We could replace the missing data with values from another, similar individual or item, but with variables as unique as CustomerID and Description can be, this would not really be appropriate as well.</div>
+          <div class="body-text">For Description, we will simply fill in the missing values with “NO DESCRIPTION AVAILABLE” as less than 1% of the values are missing. Similarly, we are going to use “NO CUSTOMER ID” in CustomerID so we can still make use of the column even though a substantial proportion is missing.</div>
+            <div class="gallery-image-container">
+              <img src="../assets/images/ECommerce/data_prep9.png" class="gallery-image">
+            </div>
+        </div>
+
+        <div class="subheader-text">Date-Time Conversion and Extraction</div>
+        <div class="project-details-content">
+          <div class="body-text">The last thing we want to do to clean this data concerns the InvoiceDate column. As of right now, InvoiceDate is a string object. We want to make it a datetime object so we can perform some time series analysis. To do this, we will make use of panada’s to_datetime() method.</div>
+            <div class="gallery-image-container half-width">
+              <img src="../assets/images/ECommerce/data_prep10.png" class="gallery-image">
+            </div>
+          <div class="body-text">From this datetime object, we will extract the year, month, day, weekday, and hour and make them new variables. As a note, dt.weekday returns the day of the week with Monday=0 and Sunday=6.</div>
+            <div class="gallery-image-container">
+              <img src="../assets/images/ECommerce/data_prep11.png" class="gallery-image">
+            </div>
+        </div>
+
+        <div class="subheader-text">Save the Cleaned Data</div>
+        <div class="project-details-content">
+          <div class="body-text">To save the dataframe as a CSV, we will use panda’s to_csv() method.</div>
+            <div class="gallery-image-container half-width">
+              <img src="../assets/images/ECommerce/data_prep12.png" class="gallery-image">
+            </div>
+          <div class="body-text">Our data is now cleaned and ready for analysis!</div>
+        </div>
+      </div>
+
+    <!-- FOOTER -->
+    <div id="footer">
+      <!-- 
+        TODO - Change href to your Instagram account (can also delete entire "a" element if no Instagram) 
+
+        This should be the same across all pages.
+      -->
+      <a class="icon-link" target="_blank" href="https://twitter.com/whitevans_eth">
+        <image src="../assets/icons/instagram.svg" class="footer-icon"/>
+      </a>
+      <!-- 
+        TODO - Change href to your Twitter account (can also delete entire "a" element if no Twitter) 
+      
+        This should be the same across all pages.
+      -->
+      <a class="icon-link" target="_blank" href="https://twitter.com/whitevans_eth">
+        <image src="../assets/icons/twitter.svg" class="footer-icon"/>
+      </a>
+      <!-- 
+        TODO - Change the email after "mailto" to your contact email 
+      
+        This should be the same across all pages.
+      -->
+      <a class="icon-link" href="mailto:whitevans.eth@gmail.com">
+        <image src="../assets/icons/mail.svg" class="footer-icon"/>
+      </a>
+    </div>
+
+	</body>
+</html>
