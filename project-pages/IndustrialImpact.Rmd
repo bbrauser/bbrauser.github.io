@@ -1,0 +1,325 @@
+---
+title: "Industrial Impact on Housing Prices in Western Kentucky"
+author: "Brad Brauser"
+date: "6/25/2023"
+output: 
+word_document: default
+pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(knitr)
+library(formattable)
+library(ggplot2)
+library(tidyr)
+library(geosphere)
+library(Rcpp)
+library(kableExtra)
+library(stargazer)
+```
+
+## Summary
+
+## Introduction
+
+In the western Kentucky area, the impact of proximity to industrial areas on property pricing is a significant concern. This project aims to examine how residential properties' value is affected by their proximity to factories, packaging facilities, and other industries. By analyzing factors such as distance, pollution levels, and market dynamics, we seek to provide valuable insights for homeowners, real estate agents, and policymakers. Understanding the correlation between industrial proximity and property prices in this region is crucial for informed decision-making regarding real estate investments and urban planning.
+
+## Literature Review
+
+Although there is limited specific literature on the impact of industrial areas on property pricing in western Kentucky, studies conducted in other regions shed light on similar issues. One such study examined the property prices in Bordeaux, Dunkirk, and Rouen, which have hazardous chemical and petrochemical industries in or near the cities (Grislain-Letremy & Katossky, 2014). Another study focused on regions in the Netherlands, namely Rancid and Noord-Brabant (F. Vor & H. De Groot, 2011). Both papers found that the influence of industrial areas on property prices is predominantly localized, with the presence and size of industrial sites affecting the perceived spatial quality of the neighborhood. Furthermore, the willingness to pay for prevention measures varied significantly among different industrial areas (Grislain-Letremy & Katossky, 2014). While these studies offer valuable insights, there is a need for further research specifically addressing the western Kentucky area to understand the localized impact of industrial proximity on property pricing and the unique dynamics of the region.
+
+Existing studies have examined the impact of industrial areas on property pricing in various regions, yet there remains a significant gap in research specifically addressing the western Kentucky area. This region possesses unique characteristics, including a distinct industrial landscape and residential patterns, which necessitate a dedicated study. Conducting research in this problem area will address the lack of localized understanding and insights into how proximity to industrial areas affects property values in western Kentucky. The study aims to investigate the direct correlation between distance from industrial sites and property pricing, the influence of pollution levels on housing market dynamics, and the varying perceptions of spatial quality in neighborhoods adjacent to different industrial sectors. By filling this research gap, the study will provide homeowners, real estate agents, and policymakers with essential information to make informed decisions regarding property investments, urban planning, and environmental management in the western Kentucky area. Ultimately, it will contribute to a comprehensive understanding of the impact of industrial proximity on property pricing and help shape strategies for sustainable development and equitable growth in the region.
+
+Understanding the correlation between these factors is vital for homeowners, real estate agents, and policymakers who make decisions about property investments and urban planning. By investigating the proximity of residential areas to industrial sites, the study aims to reveal whether there is a direct correlation between distance and housing prices. This information will provide valuable insights into the dynamics of the housing market in Western KY, allowing stakeholders to make informed decisions based on the spatial relationship between industrial areas and property values. Additionally, the study's findings will shed light on the potential impacts of industrial activities, such as pollution levels, on housing prices. This knowledge is essential for policymakers in developing strategies to ensure the sustainable development of the region while safeguarding the welfare of residents. By exploring these research questions, the study aims to contribute to evidence-based decision-making and support the development of a thriving real estate market in Western KY.
+
+## Theory
+
+This paper is exploring the impact between an industrial area's location and the pricing surrounding residential properties. This exploration includes:
+
+```         
+H1. The closer that a residential property is to an industrial area, the lower in price the property will be.
+```
+
+## Data
+
+Housing data was downloaded in a CSV from <https://westky.paragonrels.com/ParagonLS/Default.mvc#1,1,2> and uploaded to <https://github.com/bbrauser/WKYIndustrialImpact/tree/main/Data>. The data includes:
+
+```{r}
+
+# Specify the URL of the CSV file
+housing_url <- "https://raw.githubusercontent.com/bbrauser/WKYIndustrialImpact/main/HousingResearch.csv"
+
+# Read the CSV file from the URL
+housing_df <- read.csv(url(housing_url))
+
+# Display the first 6 rows of the df
+head(housing_df)
+```
+
+Because some of these properties were either not sold or are rental properties, those rows can be removed. The following is a list of the values removed and the reason why they were removed:
+
+  Withdrawn: The property did not sell
+  ContractReceived: The property is under contract, but the price it was closed for is unknown
+  Expired: The property did not sell
+  Rented: The property was a rental
+  Auction: The property was auctioned off and not sold
+  
+```{r}
+# Define the values to be removed
+values_to_remove <- c("Withdrawn", "Contract Received", "Expired", "Rented", "Auction")
+
+# Remove the values from the Status column
+housing_df <- subset(housing_df, !(Status %in% values_to_remove))
+
+# Reset the index of the dataframe
+housing_df <- data.frame(housing_df, row.names = NULL)
+
+# Display the filtered dataframe
+head(housing_df)
+```
+
+Some rows did not have values in Latitude and Longitude, so those were removed:
+
+```{r}
+# Remove rows with blank cells in Latitude and Longitude columns
+housing_df <- housing_df[complete.cases(housing_df$Latitude, housing_df$Longitude), ]
+
+# Display the filtered dataframe
+head(housing_df)
+```
+To give more of a clear minimum price, the Price column was filtered to show only prices of $20,000 and above:
+
+```{r}
+
+# Filter the price column to show values 20,000 and above
+housing_df <- filter(housing_df, Price >= 20000)
+
+# Display the first 6 rows of the df
+head(housing_df)
+```
+
+Some of the data was not needed, so the housing data was limited to Address, County, Price, Latitude, and Longitude:
+
+```{r}
+
+# Removes unneeded columns from df
+housing_df <- select(housing_df, Address, County, Price, Latitude, Longitude)
+
+# Display the first 6 rows of the df
+head(housing_df)
+```
+
+Location information of the industrial areas in western Kentucky was downloaded in a CSV from <https://www.irs.gov/pub/irs-soi/17incyky.xlsx> and uplaoded to GitHub. The data includes:
+
+```{r}
+
+# Specify the URL of the CSV file
+industry_url <- "https://raw.githubusercontent.com/bbrauser/WKYIndustrialImpact/main/IndustrialAreas.csv"
+
+# Read the CSV file from the URL
+industry_df <- read.csv(url(industry_url))
+
+# Display the first 6 rows of the df
+head(industry_df)
+```
+
+This data only needs County, FacilityNa, Longitude, and Latitude:
+
+```{r}
+
+# Compiles dataframe from industry_df
+industry_df <- select(industry_df, County, FacilityNa, Longitude, Latitude)
+
+# Display the first 6 rows of the df
+head(industry_df)
+```
+
+Since this df includes industrial locations in the whole state of Kentucky, the data must be filtered to include only the counties that are present in the houisng data CSV:
+
+```{r}
+
+industry_df <- industry_df[industry_df$County %in% housing_df$County, ]
+
+# Resets the index
+industry_df <- data.frame(industry_df, row.names = NULL)
+
+# Display the first 6 rows of the df
+head(industry_df)
+```
+
+## Methodology
+
+After cleaning and preparing the data for analysis, a new dataframe ('price_analysis_df') was created that concatenated
+
+```{r}
+# Initialize an empty data frame to store the results
+price_analysis_df <- data.frame(Address = housing_df$Address,  
+                               Price = housing_df$Price,  
+                               stringsAsFactors = FALSE)  
+
+# Add columns for closest industry and distance  
+price_analysis_df$Industry <- ""  
+price_analysis_df$Distance <- Inf  
+
+# Calculate distance between each property and industry 
+for (property_row in 1:nrow(housing_df)) {
+  property_lat <- housing_df$Latitude[property_row]
+  property_lon <- housing_df$Longitude[property_row]
+  
+  for (industry_row in 1:nrow(industry_df)) {
+    industry_lat <- industry_df$Latitude[industry_row]
+    industry_lon <- industry_df$Longitude[industry_row]
+    
+    distance <- round(sqrt((property_lat - industry_lat)^2 + (property_lon - industry_lon)^2), 2)
+    
+    # Check if the current distance is smaller than the previously recorded minimum distance
+    if (distance < price_analysis_df$Distance[property_row]) {  
+      price_analysis_df$Industry[property_row] <- industry_df$FacilityNa[industry_row]  
+      price_analysis_df$Distance[property_row] <- distance
+    }
+  }
+}  
+
+# Print the resulting data frame  
+head(price_analysis_df)
+```
+
+Because some of these properties are not very close to an industry, we are going to filter out this dataframe to only include properties that are 20 miles away or less from an industry in industry_df. This still gives us about 8000 properties to analyze:
+
+```{r}
+# Filter the price column to show values 20,000 and above
+price_analysis_df <- filter(price_analysis_df, Distance <= 20)
+
+# Display the first 6 rows of the df
+head(price_analysis_df)
+
+```
+
+Below is a simple scatterplot that shows the relationship between Price and Distance:
+
+```{r}
+
+# Get the maximum values 
+max_price <- max(price_analysis_df$Price)
+max_dist <- max(price_analysis_df$Distance)
+
+# Scatterplot of Price vs Distance
+ggplot(price_analysis_df, aes(x = Price, y = Distance)) + 
+  geom_point(color = "blue", size = 3) + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(
+    title = "Price vs Distance",      
+    x = "Price (USD)",               
+    y = "Distance (miles)"           
+  ) +
+  theme_bw() +                       
+  theme(
+    plot.title = element_text(size = 15, face = "bold"),   
+    axis.title = element_text(size = 12)                   
+  ) +
+  scale_x_continuous(breaks = seq(0, max_price, 75000), limits = c(0, max_price), labels = comma) +  
+  scale_y_continuous(breaks = seq(0, max_dist, 1), limits = c(0, max_dist)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  
+
+```
+
+The residual plot below shows if the residuals are randomly distributed, which is an assumption of linear regression:
+
+```{r}
+# Fit a linear model 
+lm <- lm(Price ~ Distance, data = price_analysis_df)
+
+# Extract the residuals 
+residuals <- residuals(lm)
+
+# Get the maximum values 
+max_price <- max(price_analysis_df$Price)
+max_dist <- max(price_analysis_df$Distance)
+
+# Scatterplot of Price vs Distance, colored by residuals  
+ggplot(price_analysis_df, aes(x = Price, y = Distance, color = residuals)) + 
+  geom_point(size = 3) + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  scale_color_gradient2(low = "blue", high = "red", mid = "white") +
+  labs(
+    title = "Price vs Distance",      
+    subtitle = "Colored by Residuals",
+    x = "Price (USD)",               
+    y = "Distance (miles)"           
+  ) +
+  theme_bw() +                       
+  theme(
+    plot.title = element_text(size = 15, face = "bold"),
+    plot.subtitle = element_text(size = 12, face = "italic"),
+    axis.title = element_text(size = 12),
+    legend.title = element_text(size = 12)
+  ) +
+  scale_x_continuous(breaks = seq(0, max_price, 75000), limits = c(0, max_price), labels = comma) +  
+  scale_y_continuous(breaks = seq(0, max_dist, 1), limits = c(0, max_dist)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
+The quantile-quantile (or QQ) plot below shows the quantiles of the residuals to the quantiles of a normal distribution, allowing one to check if the residuals are normally distributed, which is another assumption of linear regression. Deviations from the diagonal line indicate non-normality.
+```{r}
+# Create the QQ plot
+ggplot(price_analysis_df, aes(sample = Distance)) +
+  stat_qq() +
+  geom_abline(color = "red") +
+  xlab("Theoretical Quantiles") +
+  ylab("Sample Quantiles") +
+  ggtitle("QQ Plot of Distance")
+
+ggplot(price_analysis_df, aes(sample = Price)) +
+  stat_qq() +
+  geom_abline(color = "red") +
+  xlab("Theoretical Quantiles") +
+  ylab("Sample Quantiles") +
+  ggtitle("QQ Plot of Price")
+```
+
+ ## Results
+ 
+ The plots shown above give a visual representation of the relationship between Price and Distance which seems to indicate that there is a negative relationship between Price and Distance. That is, when Distance increases, Price decreases. To give a more granualr look at the relationship, a regressions table was created:
+
+
+```{r}
+# Fit linear regression model
+model <- lm(Price ~ Distance, data = price_analysis_df)
+
+# Create regression table
+regression_table <- stargazer(model, 
+                             title = "Regression Results",
+                             dep.var.labels = "Price",
+                             covariate.labels = "Distance",
+                             header = FALSE,
+                             type = "text",
+                             digits = 3)
+
+# Print regression table
+cat(regression_table, sep = "\n")
+```
+
+The results indicated a significant negative effect of Distance on Price (-1,753.965, p < 0.01), suggesting that as the distance increased, the price decreased. However, there was some uncertainty in the estimate (standard error: 225.344).
+
+The constant term in the regression equation represented 170,811.700 (p < 0.01), which was the expected price when the distance was zero. The R-squared value was 0.007, indicating that only 0.7% of the variation in Price was explained by Distance. The model's predictive power was limited, as seen from the low R-squared value. The residual standard error was 113,127.900, indicating the average prediction error.
+
+Overall, the findings suggested that Distance had a significant but weak influence on Price.
+
+## Conclusion and Implications
+
+The initial theory that the closer to an industrial area a property is the more negatively the price is affected. This was proven not to be the case, as the closer a property was to an industrial area, the higher the price of the property was. While this study was limited to the western KY area, it might be beneficial to see the implications of not only the entire state of Kentucky, but also how the type of industry affects the price.
+
+# References
+
+de Vor, F., & de Groot, H. L. (2011). The impact of industrial sites on residential property values:
+A hedonic pricing analysis from the Netherlands. Regional Studies, 45(5), 609–623.
+https://doi.org/10.1080/00343401003601925
+
+Grislain-Letrrmy, Cc., & Katossky, A. (2014). The impact of hazardous industrial facilities on
+housing prices: A comparison of parametric and semiparametric hedonic price models.
+SSRN Electronic Journal. https://doi.org/10.2139/ssrn.2457195
+
+Team kentucky. Team Kentucky | Cabinet for Economic Development. (n.d.). https://ced.ky.gov/
+existing_industries/Major_Industries
