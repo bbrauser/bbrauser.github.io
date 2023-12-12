@@ -1,3 +1,4 @@
+/* General Styles */
 * {
   box-sizing: border-box;
 }
@@ -15,7 +16,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Navbar styles */
+/* Navbar Styles */
 .navbar {
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
@@ -24,7 +25,6 @@ body {
 
 .nav-title {
   font-size: 18px;
-  color: white;
 }
 
 .button {
@@ -38,11 +38,7 @@ body {
   font-size: 14px;
 }
 
-
-
-
 /* Main Page Layout */
-
 #main-content {
   margin: 225px 425px;
   display: flex;
@@ -50,18 +46,15 @@ body {
   gap: 96px;
 }
 
-
-
-
 /* Portfolio Header */
-
 #portfolio-header {
   display: flex;
   gap: 20px;
   align-items: center;
 }
 
-#portfolio-header-image-container {
+#portfolio-header-image-container,
+#portfolio-header-text-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -73,35 +66,15 @@ body {
   height: auto;
 }
 
-#portfolio-header-text-container {
-  display: flex;
-  flex-direction: column;
-  gap: 34px;
-  flex-basis: 50%;
-}
-
-
-
-
 /* About Section */
-
-#about-section {
+#about-section,
+.about-section-content {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.about-section-content {
-  display: flex;
-  flex-direction: column;
-  gap: 34px;
-}
-
-
-
-
 /* Project Section */
-
 #my-work-section {
   display: flex;
   flex-direction: column;
@@ -114,138 +87,30 @@ body {
   flex-wrap: wrap;
 }
 
-    /* Project Cards */
-
-    .project-card {
-      max-width: calc((100% - 32px) / 3);
-      display: flex;
-      flex-direction: column;
-      gap: 34px;
-    }
-
-    .project-card-text-container {
-      flex-direction: column;
-      display: flex;
-      gap: 16px
-    }
-
-    .project-image {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      object-position: center;
-    }
-
-
-
-
-/* Project Pages */
-
-#project-header {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.project-header-image {
-  width: 100%;
-  height: auto;
-}
-
-#project-details {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.project-details-content {
+/* Project Cards */
+.project-card {
+  max-width: calc((100% - 32px) / 3);
   display: flex;
   flex-direction: column;
   gap: 34px;
 }
 
-    /* Project Gallery */
-
-    #project-gallery {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .project-gallery-content {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 34px 16px;
-    }
-
-    .gallery-image-container {
-      width: 100%;
-      display: flex;
-      justify-content: center; /* Center horizontally */
-      align-items: center;     /* Center vertically */
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .gallery-image-container.half-width {
-      width: calc((100% - 16px) / 2);
-      display: flex;           /* Use flexbox for alignment */
-      justify-content: center; /* Center horizontally */
-    }
-
-
-    .gallery-image {
-      width: 100%;
-      height: auto;
-    }
-
-
-/* Extra Extra large devices (large laptops and desktops, 1200px and below) */
-@media only screen and (max-width: 1600px) {
-  #main-content {
-    margin: 225px 275px;
-  }
+.project-card-text-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-/* Extra large devices (large laptops and desktops, 1200px and below) */
-@media only screen and (max-width: 1200px) {
-  #main-content {
-    margin: 225px 175px;
-  }
+.project-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: center;
 }
 
-/* Large devices (laptops/desktops, 1000px and below) */
-@media only screen and (max-width: 1000px) {
-  #main-content {
-    margin: 225px 75px;
-  }
-}
-
-/* Small devices (portrait tablets and large phones, 800px and below) */
-@media only screen and (max-width: 800px) {
-  #main-content {
-    margin: 150px 50px;
-  }
-
-  #portfolio-header {
-    flex-direction: column;
-  }
-
-  .project-card {
-    max-width: calc((100% - 16px) / 2);
-  }
-}
-
-/* Small devices (portrait tablets and large phones, 600px and below) */
-@media only screen and (max-width: 600px) {
-  #main-content {
-    margin: 125px 20px;
-  }
-
-  .project-card {
-    max-width: 100%;
-  }
-}
-
-
-
+/* Project Pages */
+#project-header,
+#project-details {
+  display: flex;
+  flex-direction: column;
+  gap
