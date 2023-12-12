@@ -189,9 +189,10 @@ body {
 
     .gallery-image-container.half-width {
       width: calc((100% - 16px) / 2);
+      display: flex;           /* Use flexbox for alignment */
       justify-content: center; /* Center horizontally */
-      align-items: center;     /* Center vertically */
     }
+
 
     .gallery-image {
       width: 100%;
